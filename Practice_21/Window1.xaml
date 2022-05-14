@@ -1,0 +1,23 @@
+﻿<Window x:Class="Practice_21.Window1"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Practice_21"
+        mc:Ignorable="d"
+        Title="Поиск" Height="210.606" Width="296.97">
+    <Grid>
+        <StackPanel>
+            <Label Content="Параметры поиска:"></Label>
+            <TextBox x:Name="searchBox"></TextBox>
+            <DataGrid AutoGenerateColumns="False" CanUserAddRows="False" x:Name="searchGrid" Height="74">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="Код изделия" Binding="{Binding ProductCode}"></DataGridTextColumn>
+                    <DataGridTextColumn Header="Название изделия" Binding="{Binding ProductName}"></DataGridTextColumn>
+                    <DataGridTextColumn Header="Цена изделия" Binding="{Binding AssemblePrice}"></DataGridTextColumn>
+                </DataGrid.Columns>
+            </DataGrid>
+            <Button Content="Найти" Click="Search_Click"></Button>
+        </StackPanel>
+    </Grid>
+</Window>

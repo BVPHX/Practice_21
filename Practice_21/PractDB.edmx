@@ -1,0 +1,332 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="Хранилище Pract21Model" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="authentification">
+          <Key>
+            <PropertyRef Name="Login" />
+          </Key>
+          <Property Name="Login" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Password" Type="nvarchar" MaxLength="8" Nullable="false" />
+          <Property Name="AccessLevel" Type="bit" />
+        </EntityType>
+        <EntityType Name="Details">
+          <Key>
+            <PropertyRef Name="DetailCode" />
+          </Key>
+          <Property Name="DetailCode" Type="int" Nullable="false" />
+          <Property Name="DetailName" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="DetailPrice" Type="int" Nullable="false" />
+        </EntityType>
+        <!--Ошибки, обнаруженные при создании:
+предупреждение 6002: В таблице или представлении "Pract21.dbo.ProductComposition" не определен первичный ключ. Ключ был выведен, а определение таблицы или представления было создано в режиме только для чтения.-->
+        <EntityType Name="ProductComposition">
+          <Key>
+            <PropertyRef Name="ProductCode" />
+            <PropertyRef Name="DetailCode" />
+            <PropertyRef Name="DetailAmount" />
+          </Key>
+          <Property Name="ProductCode" Type="int" Nullable="false" />
+          <Property Name="DetailCode" Type="int" Nullable="false" />
+          <Property Name="DetailAmount" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Products">
+          <Key>
+            <PropertyRef Name="ProductCode" />
+          </Key>
+          <Property Name="ProductCode" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ProductName" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="AssemblePrice" Type="int" Nullable="false" />
+        </EntityType>
+        <!--Ошибки, обнаруженные при создании:
+предупреждение 6002: В таблице или представлении "Pract21.dbo.ReleasePlan" не определен первичный ключ. Ключ был выведен, а определение таблицы или представления было создано в режиме только для чтения.-->
+        <EntityType Name="ReleasePlan">
+          <Key>
+            <PropertyRef Name="ProductCode" />
+          </Key>
+          <Property Name="ProductCode" Type="int" Nullable="false" />
+          <Property Name="ProductAmount" Type="int" />
+        </EntityType>
+        <EntityType Name="sysdiagrams">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="principal_id" Type="int" Nullable="false" />
+          <Property Name="diagram_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="version" Type="int" />
+          <Property Name="definition" Type="varbinary(max)" />
+        </EntityType>
+        <Association Name="FK_ProductComposition_Details">
+          <End Role="Details" Type="Self.Details" Multiplicity="1" />
+          <End Role="ProductComposition" Type="Self.ProductComposition" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Details">
+              <PropertyRef Name="DetailCode" />
+            </Principal>
+            <Dependent Role="ProductComposition">
+              <PropertyRef Name="DetailCode" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ProductComposition_Products">
+          <End Role="Products" Type="Self.Products" Multiplicity="1" />
+          <End Role="ProductComposition" Type="Self.ProductComposition" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Products">
+              <PropertyRef Name="ProductCode" />
+            </Principal>
+            <Dependent Role="ProductComposition">
+              <PropertyRef Name="ProductCode" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ReleasePlan_Products">
+          <End Role="Products" Type="Self.Products" Multiplicity="1" />
+          <End Role="ReleasePlan" Type="Self.ReleasePlan" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="Products">
+              <PropertyRef Name="ProductCode" />
+            </Principal>
+            <Dependent Role="ReleasePlan">
+              <PropertyRef Name="ProductCode" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="Хранилище Pract21ModelContainer">
+          <EntitySet Name="authentification" EntityType="Self.authentification" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Details" EntityType="Self.Details" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Products" EntityType="Self.Products" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ProductComposition" EntityType="Self.ProductComposition" store:Type="Tables" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [ProductComposition].[ProductCode] AS [ProductCode], 
+    [ProductComposition].[DetailCode] AS [DetailCode], 
+    [ProductComposition].[DetailAmount] AS [DetailAmount]
+    FROM [dbo].[ProductComposition] AS [ProductComposition]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="ReleasePlan" EntityType="Self.ReleasePlan" store:Type="Tables" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [ReleasePlan].[ProductCode] AS [ProductCode], 
+    [ReleasePlan].[ProductAmount] AS [ProductAmount]
+    FROM [dbo].[ReleasePlan] AS [ReleasePlan]</DefiningQuery>
+          </EntitySet>
+          <AssociationSet Name="FK_ProductComposition_Details" Association="Self.FK_ProductComposition_Details">
+            <End Role="Details" EntitySet="Details" />
+            <End Role="ProductComposition" EntitySet="ProductComposition" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ProductComposition_Products" Association="Self.FK_ProductComposition_Products">
+            <End Role="Products" EntitySet="Products" />
+            <End Role="ProductComposition" EntitySet="ProductComposition" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ReleasePlan_Products" Association="Self.FK_ReleasePlan_Products">
+            <End Role="Products" EntitySet="Products" />
+            <End Role="ReleasePlan" EntitySet="ReleasePlan" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="Pract21Model" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="authentification">
+          <Key>
+            <PropertyRef Name="Login" />
+          </Key>
+          <Property Name="Login" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Password" Type="String" MaxLength="8" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="AccessLevel" Type="Boolean" />
+        </EntityType>
+        <EntityType Name="Details">
+          <Key>
+            <PropertyRef Name="DetailCode" />
+          </Key>
+          <Property Name="DetailCode" Type="Int32" Nullable="false" />
+          <Property Name="DetailName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="DetailPrice" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="ProductComposition" Relationship="Self.FK_ProductComposition_Details" FromRole="Details" ToRole="ProductComposition" />
+        </EntityType>
+        <EntityType Name="Products">
+          <Key>
+            <PropertyRef Name="ProductCode" />
+          </Key>
+          <Property Name="ProductCode" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ProductName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="AssemblePrice" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="ProductComposition" Relationship="Self.FK_ProductComposition_Products" FromRole="Products" ToRole="ProductComposition" />
+          <NavigationProperty Name="ReleasePlan" Relationship="Self.FK_ReleasePlan_Products" FromRole="Products" ToRole="ReleasePlan" />
+        </EntityType>
+        <EntityType Name="sysdiagrams">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="principal_id" Type="Int32" Nullable="false" />
+          <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="version" Type="Int32" />
+          <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
+        </EntityType>
+        <EntityType Name="ProductComposition">
+          <Key>
+            <PropertyRef Name="ProductCode" />
+            <PropertyRef Name="DetailCode" />
+            <PropertyRef Name="DetailAmount" />
+          </Key>
+          <Property Name="ProductCode" Type="Int32" Nullable="false" />
+          <Property Name="DetailCode" Type="Int32" Nullable="false" />
+          <Property Name="DetailAmount" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Details" Relationship="Self.FK_ProductComposition_Details" FromRole="ProductComposition" ToRole="Details" />
+          <NavigationProperty Name="Products" Relationship="Self.FK_ProductComposition_Products" FromRole="ProductComposition" ToRole="Products" />
+        </EntityType>
+        <EntityType Name="ReleasePlan">
+          <Key>
+            <PropertyRef Name="ProductCode" />
+          </Key>
+          <Property Name="ProductCode" Type="Int32" Nullable="false" />
+          <Property Name="ProductAmount" Type="Int32" />
+          <NavigationProperty Name="Products" Relationship="Self.FK_ReleasePlan_Products" FromRole="ReleasePlan" ToRole="Products" />
+        </EntityType>
+        <Association Name="FK_ProductComposition_Details">
+          <End Role="Details" Type="Self.Details" Multiplicity="1" />
+          <End Role="ProductComposition" Type="Self.ProductComposition" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Details">
+              <PropertyRef Name="DetailCode" />
+            </Principal>
+            <Dependent Role="ProductComposition">
+              <PropertyRef Name="DetailCode" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ProductComposition_Products">
+          <End Role="Products" Type="Self.Products" Multiplicity="1" />
+          <End Role="ProductComposition" Type="Self.ProductComposition" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Products">
+              <PropertyRef Name="ProductCode" />
+            </Principal>
+            <Dependent Role="ProductComposition">
+              <PropertyRef Name="ProductCode" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ReleasePlan_Products">
+          <End Role="Products" Type="Self.Products" Multiplicity="1" />
+          <End Role="ReleasePlan" Type="Self.ReleasePlan" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="Products">
+              <PropertyRef Name="ProductCode" />
+            </Principal>
+            <Dependent Role="ReleasePlan">
+              <PropertyRef Name="ProductCode" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="PractDB" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="authentification" EntityType="Self.authentification" />
+          <EntitySet Name="Details" EntityType="Self.Details" />
+          <EntitySet Name="Products" EntityType="Self.Products" />
+          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" />
+          <EntitySet Name="ProductComposition" EntityType="Self.ProductComposition" />
+          <EntitySet Name="ReleasePlan" EntityType="Self.ReleasePlan" />
+          <AssociationSet Name="FK_ProductComposition_Details" Association="Self.FK_ProductComposition_Details">
+            <End Role="Details" EntitySet="Details" />
+            <End Role="ProductComposition" EntitySet="ProductComposition" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ProductComposition_Products" Association="Self.FK_ProductComposition_Products">
+            <End Role="Products" EntitySet="Products" />
+            <End Role="ProductComposition" EntitySet="ProductComposition" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ReleasePlan_Products" Association="Self.FK_ReleasePlan_Products">
+            <End Role="Products" EntitySet="Products" />
+            <End Role="ReleasePlan" EntitySet="ReleasePlan" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="Хранилище Pract21ModelContainer" CdmEntityContainer="PractDB">
+          <EntitySetMapping Name="authentification">
+            <EntityTypeMapping TypeName="Pract21Model.authentification">
+              <MappingFragment StoreEntitySet="authentification">
+                <ScalarProperty Name="Login" ColumnName="Login" />
+                <ScalarProperty Name="Password" ColumnName="Password" />
+                <ScalarProperty Name="AccessLevel" ColumnName="AccessLevel" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Details">
+            <EntityTypeMapping TypeName="Pract21Model.Details">
+              <MappingFragment StoreEntitySet="Details">
+                <ScalarProperty Name="DetailCode" ColumnName="DetailCode" />
+                <ScalarProperty Name="DetailName" ColumnName="DetailName" />
+                <ScalarProperty Name="DetailPrice" ColumnName="DetailPrice" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Products">
+            <EntityTypeMapping TypeName="Pract21Model.Products">
+              <MappingFragment StoreEntitySet="Products">
+                <ScalarProperty Name="ProductCode" ColumnName="ProductCode" />
+                <ScalarProperty Name="ProductName" ColumnName="ProductName" />
+                <ScalarProperty Name="AssemblePrice" ColumnName="AssemblePrice" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="sysdiagrams">
+            <EntityTypeMapping TypeName="Pract21Model.sysdiagrams">
+              <MappingFragment StoreEntitySet="sysdiagrams">
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="principal_id" ColumnName="principal_id" />
+                <ScalarProperty Name="diagram_id" ColumnName="diagram_id" />
+                <ScalarProperty Name="version" ColumnName="version" />
+                <ScalarProperty Name="definition" ColumnName="definition" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ProductComposition">
+            <EntityTypeMapping TypeName="Pract21Model.ProductComposition">
+              <MappingFragment StoreEntitySet="ProductComposition">
+                <ScalarProperty Name="ProductCode" ColumnName="ProductCode" />
+                <ScalarProperty Name="DetailCode" ColumnName="DetailCode" />
+                <ScalarProperty Name="DetailAmount" ColumnName="DetailAmount" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ReleasePlan">
+            <EntityTypeMapping TypeName="Pract21Model.ReleasePlan">
+              <MappingFragment StoreEntitySet="ReleasePlan">
+                <ScalarProperty Name="ProductCode" ColumnName="ProductCode" />
+                <ScalarProperty Name="ProductAmount" ColumnName="ProductAmount" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="Нет" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

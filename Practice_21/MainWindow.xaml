@@ -1,0 +1,87 @@
+﻿<Window x:Class="Practice_21.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Practice_21"
+        mc:Ignorable="d"
+        Title="MainWindow" ResizeMode="NoResize" Height="539.094" Width="848.322">
+    <Grid>
+        <Menu VerticalAlignment="Top">
+            <MenuItem Header="Сохранить" Click="SaveButton"></MenuItem>
+            <MenuItem Header="Запись">
+                <MenuItem Header="Добавить"></MenuItem>
+                <MenuItem Header="Изменить"></MenuItem>
+                <MenuItem Header="Удалить"></MenuItem>
+            </MenuItem>
+            <MenuItem Header="Поиск" Click="Search"></MenuItem>
+        </Menu>
+        <TabControl x:Name="tabControl" SelectionChanged="TabSelectionChanged" HorizontalAlignment="Left" Height="324" Margin="10,23,0,0" VerticalAlignment="Top" Width="822">
+            <TabItem Header="Справочник изделий">
+                <Grid Background="#FFE5E5E5">
+                    <DataGrid  CanUserAddRows="False" CanUserDeleteRows="False" CanUserResizeColumns="False" CanUserReorderColumns="False" AutoGenerateColumns="False" x:Name="productsGrid" Margin="0,0,0,24">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="Код изделия" Binding="{Binding ProductCode}"></DataGridTextColumn>
+                            <DataGridTextColumn Header="Название изделия" Binding="{Binding ProductName}"></DataGridTextColumn>
+                            <DataGridTextColumn Header="Цена изделия" Binding="{Binding AssemblePrice}"></DataGridTextColumn>
+                        </DataGrid.Columns>
+
+                    </DataGrid>
+                    <Button x:Name="ti1Delete" Content="Удалить запись" Margin="0,272,666,0" Click="ti1Delete_Click"></Button>
+                    <Button x:Name="ti1Add" Content="Добавить запись" Margin="150,272,516,0" Click="AddRowTI1"></Button>
+                    <Button x:Name="ti1Find" Content="Поиск по первой букве"  Margin="666,272,0,0" Click="ti1Find_Click"></Button>
+                    <TextBox x:Name="tb1Find" HorizontalAlignment="Left" Height="23" Margin="502,273,0,0" TextWrapping="Wrap" Text="" MaxLength="1" VerticalAlignment="Top" Width="164"/>
+                </Grid>
+            </TabItem>
+            <TabItem Header="Справочник деталей">
+                <Grid Background="#FFE5E5E5">
+                    <DataGrid  CanUserAddRows="False" CanUserDeleteRows="False" CanUserResizeColumns="False" CanUserReorderColumns="False" AutoGenerateColumns="False" x:Name="detailsGrid" >
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="Код детали" Binding="{Binding DetailCode}"></DataGridTextColumn>
+                            <DataGridTextColumn Header="Название детали" Binding="{Binding DetailName}"></DataGridTextColumn>
+                            <DataGridTextColumn Header="Цена детали" Binding="{Binding DetailPrice}"></DataGridTextColumn>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </Grid>
+
+            </TabItem>
+            <TabItem Header="Cостав изделий">
+                <Grid Background="#FFE5E5E5">
+                    <DataGrid CanUserAddRows="False" CanUserDeleteRows="False" CanUserResizeColumns="False" CanUserReorderColumns="False" AutoGenerateColumns="False" x:Name="compositionGrid">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="Код изделия" Binding="{Binding ProductCode}"></DataGridTextColumn>
+                            <DataGridTextColumn Header="Код детали" Binding="{Binding DetailCode}"></DataGridTextColumn>
+                            <DataGridTextColumn Header="Кол-во деталей" Binding="{Binding DetailAmount}"></DataGridTextColumn>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </Grid>
+            </TabItem>
+            <TabItem Header="План выпуска">
+                <Grid Background="#FFE5E5E5">
+                    <DataGrid CanUserAddRows="False" CanUserDeleteRows="False" CanUserResizeColumns="False" CanUserReorderColumns="False" AutoGenerateColumns="False" x:Name="planGrid">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="Код изделия" Binding="{Binding ProductCode}"></DataGridTextColumn>
+                            <DataGridTextColumn Header="Кол-во изделий" Binding="{Binding ProductAmount}"></DataGridTextColumn>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </Grid>
+
+            </TabItem>
+            <TabItem Header="Стоимости">
+                <Grid Background="#FFE5E5E5">
+                    <DataGrid CanUserAddRows="False" CanUserDeleteRows="False" CanUserResizeColumns="False" CanUserReorderColumns="False" AutoGenerateColumns="False" x:Name="priceGrid">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="Название" Binding="{Binding Name}"></DataGridTextColumn>
+                            <DataGridTextColumn Header="Стоимость деталий" Binding="{Binding Price}"></DataGridTextColumn>
+                            <DataGridTextColumn Header="Стоимость изделия" Binding="{Binding ProductPrice}"></DataGridTextColumn>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </Grid>
+
+            </TabItem>
+        </TabControl>
+
+
+
+    </Grid>
+</Window>

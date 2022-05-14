@@ -1,0 +1,19 @@
+﻿<Window x:Class="Practice_21.AddWin"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Practice_21"
+        mc:Ignorable="d"
+        Title="Добавить запись" Height="170.901" Width="211.065">
+    <Grid>
+        <StackPanel>
+            <Label Content="Название изделия"></Label>
+            <TextBox x:Name="addNameBox"></TextBox>
+            <Label Content="Цена изделия"></Label>
+            <TextBox x:Name="addPriceBox"></TextBox>
+            <Button Content="Добавить" Click="Add_Product"></Button>
+            <Button Content="Отмена" Click="Button_Click" ></Button>
+        </StackPanel>
+    </Grid>
+</Window>
